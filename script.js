@@ -90,6 +90,7 @@ var temperatura;
 var anio=1743;
 var countries_all;
 var countries;
+var anio2=0;
 
 ///////////////////// PROGRAMA PRINCIPAL //////////////////////
 <!-- queue: crea una cola de tareas a realizar (defer) -->
@@ -112,9 +113,9 @@ function ready(error, world, names, temp) {
     <!-- Obtiene las caracteristicas de cada uno de los paises del JSON -->
     countries = topojson.feature(world, world.objects.countries).features;
 
-    var globe = {type: "Sphere"},
+    globe = {type: "Sphere"};
     <!-- Obtiene los puntos donde se encuentra la tierra del archivo JSON -->
-        land = topojson.feature(world, world.objects.land),
+    var  land = topojson.feature(world, world.objects.land),
     <!-- Devuelve la geometria de los paises en el mapa, haciendo un filtro con dos objetos -->
     <!-- geometricos que comparten un borde interior, selecionandolo para uno de ellos -->
         borders = topojson.mesh(world, world.objects.countries, function(a, b) { return a !== b; }),
@@ -123,19 +124,6 @@ function ready(error, world, names, temp) {
 
     // Se asigna el valor leido a la variable global
     temperatura = temp;
-
-    //////////////// COLOR BREWER /////////////////////
-    // Para los colores
-    // Limites de los datos
-    extentTemp = d3.extent(temperatura, function(d) { return +d['AverageTemperature']});
-    // Paso para cada color en la escala
-    step = (extentTemp[1]-extentTemp[0])/(11.0-1.0);
-    // Dominio de los datos
-    dominio = d3.range(extentTemp[0],extentTemp[1]+step,step);
-    // Rango de la escala de colores
-    rango = colorbrewer['BuRd'][11];
-    // Escala de colores
-    color = d3.scale.linear().domain(dominio).range(rango);
 
     ////////////// FILTROS ///////////////////////////
     <!-- Guarda los paises que pasan un filtro con las caracteristicas -->
@@ -166,6 +154,19 @@ function ready(error, world, names, temp) {
                 }
         })
     });
+
+    //////////////// COLOR BREWER /////////////////////
+    // Para los colores
+    // Limites de los datos
+    extentTemp = d3.extent(temperatura, function(d) { return +d['AverageTemperature']});
+    // Paso para cada color en la escala
+    step = (extentTemp[1]-extentTemp[0])/(11.0-1.0);
+    // Dominio de los datos
+    dominio = d3.range(extentTemp[0],extentTemp[1]+step,step);
+    // Rango de la escala de colores
+    rango = colorbrewer['BuRd'][11];
+    // Escala de colores
+    color = d3.scale.linear().domain(dominio).range(rango);
 
     //////////// COLORES DE LOS PAISES Y EL GLOBLO ///////////////
     // COLORES DEL GLOBO
@@ -238,29 +239,26 @@ function init(countries,globe) {
     // Cuando se mueve la barra, actualizamos los colores
     d3.select("#SliderTiempo")
         .on("mousemove", function() {
-            update_temp(globe);
+            update_anioSlider();
+        })
+    d3.select("#InputAnio")
+        .on("change",function() {
+            update_anioInput();
         })
 }
 
-////////////////// MOUSEMOVE: ACTUALIZAR COLORES ////////////////////
-function update_temp(globe) {
-
+/////////////////// CLICK: ACTUALIZAR VALOR AÑO //////////////
+function update_anioSlider()
+{
     anio = SliderTiempo.value;
 
-    svg.selectAll('.country')
-        .data(countries_all)
-        .enter()
-        .append('path')
-        .attr('d',path)
-        .style('fill', '#fff')
-        .style('stroke','#fff')
-
-    var countries = countries_all.filter(function(d) {
+    countries1 = countries_all.filter(function(d) {
         return temperatura.some(function(m) {
-            if (m.dt == anio)
+            if (m.dt == anio) {
                 if (d.name == m.Country) {
-                    return d.temp = m.AverageTemperature;
+                    return {TEMP1: d.temp1 = m.AverageTemperature}
                 }
+            }
         })
     })
 
@@ -270,22 +268,117 @@ function update_temp(globe) {
         .style('font-size', '48px')
         .text(anio.toString());
 
-    svg.append('path')
-        .datum(globe)
-        .style('stroke', '#000')
-        .style('stroke-width',3)
-        .style('fill', 'transparent')
-        .attr('d',path)
-
     svg.selectAll('.country')
-        .data(countries)
+        .data(countries_all)
         .enter()
         .append('path')
-        .attr('d',path)
-        .style('fill', function(d) { return color(d.temp)})
-        .style('stroke','#fff')
-        .on("mouseover", function(d) {update_name(d)})
-        .on("click",function(d) {update_chart(d)});
+        .attr('d', path)
+        .style('fill', '#fff')
+        .style('stroke', '#fff')
+
+    update_temp();
+}
+
+///////////////////// CHANGE: ACTUALIZAR VALOR AÑO //////////////
+function update_anioInput()
+{
+    anio2 = InputAnio.value;
+
+    countries2 = countries_all.filter(function(d) {
+        return temperatura.some(function(m) {
+            if (m.dt == anio2) {
+                if (d.name == m.Country) {
+                    return {TEMP2: d.temp2 = m.AverageTemperature}
+                }
+            }
+        })
+    })
+
+    svg.selectAll('.country')
+        .data(countries_all)
+        .enter()
+        .append('path')
+        .attr('d', path)
+        .style('fill', '#fff')
+        .style('stroke', '#fff')
+
+    update_temp();
+}
+
+////////////////// MOUSEMOVE: ACTUALIZAR COLORES ////////////////////
+function update_temp() {
+
+    if (anio2<"1743"){
+
+        svg.selectAll('.country')
+            .data(countries1)
+            .enter()
+            .append('path')
+            .attr('d', path)
+            .style('fill', function (d) {
+                return color(d.temp)
+            })
+            .style('stroke', '#fff')
+            .on("mouseover", function (d) {
+                update_name(d)
+            })
+            .on("click", function (d) {
+                update_chart(d)
+            });
+
+        d3.selectAll('.label')
+            .data(dominio)
+            .attr('x',function(d,i){return 5})
+            .attr('y',function(d,i){return i*20+10})
+            .text(function(d){return d.toFixed(1)})		// ToFixed para un solo decimal
+
+    }
+    else {
+
+        countries_diff = countries1.filter(function (d) {
+            return countries2.some(function (m) {
+                if (m.name == d.name) {
+                    if (d.temp1 != "" && m.temp2 != "") {
+                        return {DIFF: d.diff = d.temp1 - m.temp2}
+                    }
+                }
+            })
+        })
+
+        //////////////// ACTUALIZAR ESCALA /////////////////////
+        // Para los colores
+        // Limites de los datos
+        extentTemp_diff = d3.extent(countries_diff, function(d) { return +d['diff']});
+        // Paso para cada color en la escala
+        step_diff = (extentTemp_diff[1]-extentTemp_diff[0])/(11.0-1.0);
+        // Dominio de los datos
+        dominio_diff = d3.range(extentTemp_diff[0],extentTemp_diff[1]+step_diff,step_diff);
+        // Escala de colores
+        color_diff = d3.scale.linear().domain(dominio_diff).range(rango);
+
+        svg.selectAll('.country')
+            .data(countries_diff)
+            .enter()
+            .append('path')
+            .attr('d', path)
+            .style('fill', function (d) {
+                return color_diff(d.diff)
+            })
+            .style('stroke', '#fff')
+            .on("mouseover", function (d) {
+                update_name(d)
+            })
+            .on("click", function (d) {
+                update_chart(d)
+            });
+
+        d3.selectAll('.label')
+            .data(dominio_diff)
+            .attr('x',function(d,i){return 5})
+            .attr('y',function(d,i){return i*20+10})
+            .text(function(d){return d.toFixed(1)})		// ToFixed para un solo decimal
+
+    }
 
 }
 
@@ -409,24 +502,8 @@ function mousemove() {
 
         projection.rotate(o1);
 
-        var countries = countries_all.filter(function(d) {
-            return temperatura.some(function(m) {
-                if (m.dt == anio)
-                    if (d.name == m.Country) {
-                        return d.temp = m.AverageTemperature;
-                    }
-            })
-        })
+        update_temp();
 
-        svg.selectAll('.country')
-            .data(countries)
-            .enter()
-            .append('path')
-            .attr('d',path)
-            .style('fill', function(d) { return color(d.temp)})
-            .style('stroke','#fff')
-            .on("mouseover", function(d) {update_name(d)})
-            .on("click",function(d) {update_chart(d)})
     }
 }
 
