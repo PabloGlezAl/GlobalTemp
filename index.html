@@ -19,6 +19,16 @@
         Se compone de un mapa giratorio que muestra en color la temperatura de los paises por año y que permite
         obtener un gráfico de barras con el historico de un rango de +/- 5 años a partir del año seleccionado.
     <p>
+    <h3>Instrucciones</h3>
+    <p>
+        Si el año de comparación es menor de 1743:<br>
+            Se visualiza la temperatura en el mapa del año seleccionado mediante la línea de tiempos principal<br><br>
+
+        Si el año de comparacion es mayor de 1743:<br>
+            Se visualiza en el mapa la diferencia de temperatura entre el año de la linea de tiempos principal y
+            el año seleccionado para la comparación:<br>
+                            Diferencia = Temp. Línea de tiempos - Temp. Año de comparación
+    </p>
 </div>
 
 <hr>
@@ -32,8 +42,9 @@
 
     <div id="Mundo">
         <div id="slider">
-            <h3>Línea de tiempos [1743 - 2013]</h3>
+            <h3>Línea de tiempos principal [1743 - 2013]</h3>
             <input type="range" id="SliderTiempo" value="1743" max="2013" min="1743" step="1" style="width:900px" >
+            <h3>Año para la comparación: <input type="number" id="InputAnio" value="0" min="1743" max="2013" style="font-size:30pt;height:50px;width:120px;"> </h3>
         </div>
     </div>
 
