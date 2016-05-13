@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+
+<body>
+
+<title>Representación Temperatura Global</title>
+
+<h1> <img src="EPI.png" alt="EPI" align="left" style="width:200px;height:80px">
+    Representación de la Temperatura Global
+    <img src="maiind.png" alt="MAIIND" align="right" style="width:200px;height:90px">
+</h1>
+
+<hr>
+
+<div align=justify style="width:500px;">
+    <h3>Descripción</h3>
+    <p>
+        Ejemplo de representación de mapas con d3 de la temperatura global del planeta a lo largo de los años.
+        Se compone de un mapa giratorio que muestra en color la temperatura de los paises por año y que permite
+        obtener un gráfico de barras con el historico de un rango de +- 5 años a partir del año seleccionado.
+    <p>
+</div>
+
+<hr>
+
+<div id="contenedor">
+    <div id="NombreMundo"><h2>Gráfico del Mundo</h2></div>
+
+    <div id="NombreGrafico">
+        <h2>Gráfico de Barras del País</h2>
+    </div>
+
+    <div id="Mundo">
+        <div id="slider">
+            <h3>Línea de tiempos [1743 - 2013]</h3>
+            <input type="range" id="SliderTiempo" value="1743" max="2013" min="1743" step="1" style="width:900px" >
+        </div>
+    </div>
+
+    <div id="Grafico"></div>
+</div>
+
+<script src="//d3js.org/d3.v3.min.js"></script>
+<script src="//d3js.org/queue.v1.min.js"></script>
+<script src="//d3js.org/topojson.v1.min.js"></script>
+<script type="text/javascript" src="colorbrewer.js"></script>
+<link rel="stylesheet" type="text/css" href="style.css">
+
+
+<script type="text/javascript" src="script.js"></script>
+
+</body>
+
+
+
