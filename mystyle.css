@@ -1,0 +1,52 @@
+#range {
+    top: 0px;
+    position: absolute
+}
+
+#contenedor {
+    top: 40px;
+    position: relative
+}
+
+#Mundo {
+
+    top: 100px;
+    width: 900px;
+    heigth: 900px;
+}
+
+#Grafico {
+
+    top: 100px;
+    width: 900px;
+    heigth: 900px;
+}
+
+/************ GRAFICO DE BARRAS **********************/
+.bar {
+    fill: steelblue;
+}
+
+.bar:hover {
+    fill: brown;
+}
+
+.axis {
+    font: 20px sans-serif;
+}
+
+.axis path,
+.axis line {
+    fill: none;
+    stroke: #000;
+    shape-rendering: crispEdges;
+}
+
+.x.axis path {
+    display: none;
+}
+
+.line {
+    stroke: #000;
+}
+/*****************************************************/
