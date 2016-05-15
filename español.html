@@ -1,0 +1,205 @@
+<!DOCTYPE HTML>
+
+<html>
+	<head>
+		<link href='favicon.png' rel='shortcut icon' type='image/png'>
+		<title>Representación de la Temperatura Global</title>
+		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+		<meta name="description" content="" />
+		<meta name="keywords" content="" />
+		<!--[if lte IE 8]><script src="css/ie/html5shiv.js"></script><![endif]-->
+		<script src="js/jquery.min.js"></script>
+		<script src="js/jquery.dropotron.min.js"></script>
+		<script src="js/jquery.scrollgress.min.js"></script>
+		<script src="js/jquery.scrolly.min.js"></script>
+		<script src="js/jquery.slidertron.min.js"></script>
+		<script src="js/skel.min.js"></script>
+		<script src="js/skel-layers.min.js"></script>
+		<script src="js/init.js"></script>
+
+		<script src="//d3js.org/d3.v3.min.js"></script>
+		<script src="//d3js.org/queue.v1.min.js"></script>
+		<script src="//d3js.org/topojson.v1.min.js"></script>
+		<script type="text/javascript" src="colorbrewer.js"></script>
+
+		<script type="text/javascript" src="script.js"></script>
+		<script type="text/javascript" src="scriptgraph.js"></script>
+		<link rel="stylesheet" type="text/css" href="mystyle.css">
+
+		<noscript>
+			<link rel="stylesheet" href="css/skel.css" />
+			<link rel="stylesheet" href="css/style.css" />
+			<link rel="stylesheet" href="css/style-xlarge.css" />
+		</noscript>
+		<!--[if lte IE 9]><link rel="stylesheet" href="css/ie/v9.css" /><![endif]-->
+		<!--[if lte IE 8]><link rel="stylesheet" href="css/ie/v8.css" /><![endif]-->
+	</head>
+	<body class="landing">
+
+		<!-- Header -->
+			<header id="header" class="alt skel-layers-fixed">
+				<h1><a href="index.html">Global Temperature <span>by Pablo González Álvarez</span></a></h1>
+				<nav id="nav">
+					<ul>
+						<li><a href="index.html">English</a></li>
+					</ul>
+				</nav>
+			</header>
+
+		<!-- Banner -->
+			<section id="banner">
+				<div class="inner">
+					<h2>Temperatura Global</h2>
+					<p>Representación de la temperatura de la superficie de la Tierra para cada país desde 1743 hasta 2013</p>
+					<ul class="actions">
+						<li><a href="#one" class="button big scrolly">Ver más</a></li>
+					</ul>
+				</div>
+			</section>
+
+		<!-- One -->
+			<section id="one" class="wrapper style1">
+				<div class="container">
+					<header class="major">
+						<h2>El Mundo</h2>
+						<p>Representación del mundo en 3D que permite ver la temperatura de cada país en la figura.<br>
+							La representación únicamente muestra los datos de los paises con información del año analizado.
+							</p>
+						<ul class="actions">
+							<li><a href="#three" class="button big scrolly">Gráfico de barras</a></li>
+						</ul>
+						<br><br>
+					</header>
+				</div>
+			</section>
+			
+		<!-- Two -->
+			<section id="two" class="wrapper style2">
+				<div class="container">
+					<div id="Mundo">
+						<div id="slider">
+							<h3>Línea de tiempos principal [1743 - 2013]</h3>
+							<input type="range" id="SliderTiempo" value="1743" max="2013" min="1743" step="1" style="width:900px" >
+							<h3>Año para la comparación: <input type="number" id="InputAnio" value="0" min="1743" max="2013" style="font-size:20pt;height:40px;width:120px;"> </h3>
+						</div>
+						<script type="text/javascript" src="script.js"></script>
+					</div>
+					<div class="row uniform">
+						<div class="4u 6u(2) 12u$(3)">
+							<section class="feature fa-arrows">
+								<h3>Rotación del Mundo</h3>
+								<p>Mediante un click y arrastrando el ratón sobre la figura se puede rotar el mundo.</p>
+							</section>
+						</div>
+						<div class="4u 6u$(2) 12u$(3)">
+							<section class="feature fa-hand-o-up">
+								<h3>Gráfico</h3>
+								<p>Haciendo click en un país se muestra un gráfico de barras con los valores de temperatura de +/-5 años alrededor del año seleccionado.</p>
+							</section>
+						</div>
+						<div class="4u$ 6u(2) 12u$(3)">
+							<section class="feature fa-hand-o-right">
+								<h3>Nombre del País</h3>
+								<p>Deslizando el ratón sobre un país se puede observar el nombre del país.</p>
+							</section>
+						</div>
+						<div class="4u 6u$(2) 12u$(3)">
+							<section class="feature fa-sliders">
+								<h3>Selección del Año Principal</h3>
+								<p>Con el slider se puede seleccionar el año principal para representar la temperatura en la figura.</p>
+							</section>
+						</div>
+						<div class="4u 6u(2) 12u$(3)">
+							<section class="feature fa-calendar">
+								<h3>Selección del Año Secundario</h3>
+								<p>Con la spinbox se puede seleccionar el año secundario, que permite comparar la temperatura de dos años.</p>
+							</section>
+						</div>
+						<div class="4u$ 6u$(2) 12u$(3)">
+							<section class="feature fa-cog">
+								<h3>Configuración</h3>
+								<p>Si el valor del spinbox es 0, se representa la temperatura del año principal. Si se selecciona un año secundario,
+									la figura muestra la comparación (Temp.Año Principal - Temp.Año Secundario).</p>
+							</section>
+						</div>
+					</div>
+				</div>
+			</section>
+			
+		<!-- Three -->
+			<section id="three" class="wrapper style1">
+				<div class="container">
+					<header class="major">
+						<h2>Gráfico de barras</h2>
+						<p>Representa el valor de la temperatura del año primario seleccionado, así como +/-5 años alrededor de
+							ese año del país seleccionado cuando se hace click en la figura del mundo. Tiene distintos tipos de
+							interación para facilitar la comparación.</p>
+						<ul class="actions">
+							<li><a href="#cta" class="button big scrolly">Final</a></li>
+						</ul>
+						<br>
+					</header>
+				</div>
+			</section>
+
+		<!-- Four -->
+		<section id="four" class="wrapper style2">
+			<div class="container">
+				<div id="Grafico">
+					<script type="text/javascript" src="scriptgraph.js"></script>
+				</div>
+				<br><br><br><br>
+				<div class="row uniform">
+					<div class="4u 6u(2) 12u$(3)">
+						<section class="feature fa-bar-chart">
+							<h3>Gráfico de barras</h3>
+							<p>Representación de la temperatura del país seleccionado en la figura del mundo. Muestra +/-5 años alrededor del año principal.</p>
+						</section>
+					</div>
+					<div class="4u 6u$(2) 12u$(3)">
+						<section class="feature fa-hand-o-right">
+							<h3>Interacción</h3>
+							<p>Deslizando el ratón sobre una barra: <br>
+								- Cambia el color.<br>
+								- Muestra el valor de la temperatura.<br>
+								- Muestra una línea blanca para la comparación.</p>
+						</section>
+					</div>
+					<div class="4u$ 6u(2) 12u$(3)">
+						<section class="feature fa-info-circle">
+							<h3>Información</h3>
+							<p>Con el gráfico puedes ver la tendencia de la temperatura en los años seleccionados, asi como picos de temperatura.</p>
+						</section>
+					</div>
+				</div>
+			</div>
+		</section>
+			
+		<!-- CTA -->
+			<section id="cta" class="wrapper style3">
+				<h2>Pablo González Álvarez <br><br>
+				Máster en Automatización e Informática Industrial <br>
+				Grado en Ingeniería Electrónica Industria y Automática <br><br>
+				Escuela Politécnica de Ingeniería de Gijón (Asturias - Spain)</h2>
+			</section>
+			
+		<!-- Footer -->
+			<footer id="footer">
+				<ul class="icons">
+					<li><a href="https://twitter.com/PabloGlez7" class="icon fa-twitter"><span class="label">Twitter</span></a></li>
+					<li><a href="https://www.linkedin.com/profile/preview?vpa=pub&locale=es_ES" class="icon fa-linkedin"><span class="label">LinkedIn</span></a></li>
+					<li><a href="https://github.com/PabloGlezAl" class="icon fa-github"><span class="label">GitHub</span></a></li>
+					<li><a href="mailto:glezalvarez.pablo@gmail.com" class="icon fa-envelope"><span class="label">Envelope</span></a></li>
+				</ul>
+				<ul class="menu">
+					<li><a href="http://www.uniovi.es/">UNIOVI</a></li>
+					<li><a href="http://www.epigijon.uniovi.es/">EPI</a></li>
+					<li><a href="http://maiind.dieecs.com/">MAIIND</a></li>
+				</ul>
+				<span class="copyright">
+					&copy; Copyright. All rights reserved.
+				</span>
+			</footer>
+
+	</body>
+</html>
